@@ -3,6 +3,15 @@ const { Client, Collection, Events, GatewayIntentBits, REST, Routes } = require(
 const { clientId, guildId, token, password } = require('./config.json');
 const fs = require('node:fs');
 const path = require('node:path');
+var mysql = require('mysql');
+
+var con = mysql.createConnection({
+  host: "localhost",
+  port: 3306,
+  user: "root",
+  password: password,
+  database: "frank"
+});
 
 con.connect(function(err) {
     if (err) throw err;
@@ -64,6 +73,44 @@ const rest = new REST().setToken(token);
 bot.on('ready', function () {
     console.log("Je suis connecté !")
 })
+
+bot.on('messageCreate', message => {
+    if (message.author.bot) {
+      return
+    }
+    else {
+      con.query("SELECT USER_ID FROM USER WHERE USER_ID =" + message.author.id, function (err, result, fields) {
+          if (err) throw err;
+          console.log(result);
+          if (result.length === 0) {
+              con.query("INSERT INTO USER VALUES (" + message.author.id + ", '" + message.author.username + "')", function (err, result, fields) {
+                  if (err) throw err;
+              });
+          }
+      });
+      con.query("SELECT SERVER_ID FROM SERVER WHERE SERVER_ID =" + message.guildId, function (err, result, fields) {
+          if (err) throw err;
+          console.log(result);
+          if (result.length === 0) {
+              con.query("INSERT INTO SERVER VALUES (" + message.guildId + ", null)", function (err, result, fields) {
+                  if (err) throw err;
+              });
+          }
+      });
+      con.query("SELECT CHANNEL_ID FROM CHANNEL WHERE CHANNEL_ID =" + message.channelId, function (err, result, fields) {
+          if (err) throw err;
+          console.log(result);
+          if (result.length === 0) {
+              con.query("INSERT INTO CHANNEL VALUES (" + message.channelId + ", null ," + message.guildId + ")", function (err, result, fields) {
+                  if (err) throw err;
+              });
+          }
+      });
+      con.query("INSERT INTO MESSAGE VALUES (" + message.id + ", \"" + message.content + "\", " + message.author.id + ", " + message.channelId + ")", function (err, result, fields) {
+          if (err) throw err;
+      });
+    }
+  })
 
 bot.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isChatInputCommand()) return;
