@@ -1,0 +1,36 @@
+Create table USER
+(
+	USER_ID	BIGINT UNSIGNED	not null,
+	USER_NAME	VARCHAR(35),
+	constraint pk_user primary key (USER_ID)
+);
+
+Create table SERVER
+(
+	SERVER_ID	BIGINT UNSIGNED	not null,
+	SERVER_NAME	VARCHAR(35),
+	constraint pk_server primary key (SERVER_ID)
+);
+
+Create table CHANNEL
+(
+	CHANNEL_ID	BIGINT UNSIGNED	not null,
+	CHANNEL_NAME	VARCHAR(35),
+	SERVER_ID	BIGINT UNSIGNED	not null,
+	constraint pk_channel primary key (CHANNEL_ID),
+	constraint fk_channel_server foreign key (SERVER_ID)
+		references SERVER (SERVER_ID)
+);
+
+Create table MESSAGE
+(
+	MESSAGE_ID	BIGINT UNSIGNED	not null,
+	MESSAGE_CONTENT	VARCHAR(2000)	not null,
+	USER_ID	BIGINT UNSIGNED	not null,
+	CHANNEL_ID	BIGINT UNSIGNED	not null,
+	constraint pk_message primary key (MESSAGE_ID),
+	constraint fk_message_user foreign key (USER_ID)
+		references USER (USER_ID),
+	constraint fk_message_channel foreign key (CHANNEL_ID)
+		references CHANNEL (CHANNEL_ID)
+);
