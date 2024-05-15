@@ -13,7 +13,7 @@ var con = mysql.createConnection({
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('show-message-channel')
-		.setDescription('Show the last X message sent by User')
+		.setDescription('Show the last X messages sent in a channel')
         .addIntegerOption(option =>
             option.setName('number-of-message')
                 .setDescription('The amount of message to show.(1-5)')
