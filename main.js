@@ -1,6 +1,6 @@
 const Discord = require('discord.js')
 const { Client, Collection, Events, GatewayIntentBits, REST, Routes } = require('discord.js');
-const { clientId, guildId, token, password } = require('./config.json');
+const { clientId, guildId, token, password, username, database } = require('./config.json');
 const fs = require('node:fs');
 const path = require('node:path');
 var mysql = require('mysql');
@@ -8,9 +8,9 @@ var mysql = require('mysql');
 var con = mysql.createConnection({
   host: "localhost",
   port: 3306,
-  user: "root",
+  user: username,
   password: password,
-  database: "frank"
+  database: database
 });
 
 con.connect(function(err) {

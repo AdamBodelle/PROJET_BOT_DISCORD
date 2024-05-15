@@ -1,12 +1,13 @@
 const { SlashCommandBuilder } = require('discord.js');
 var mysql = require('mysql');
+const { password, username, database } = require('../../config.json');
 
 var con = mysql.createConnection({
   host: "localhost",
   port: 3306,
-  user: "root",
-  password: "frank123",
-  database: "frank"
+  user: username,
+  password: password,
+  database: database
 });
 
 module.exports = {

@@ -1,0 +1,8 @@
+{
+	"token": "yourToken",
+	"clientId": "yourClientId",
+	"guildId": "yourGuildId",
+	"password": "yourDBPassword",
+	"username": "yourDBUsername",
+	"database": "yourDBName"
+}
